@@ -7,7 +7,6 @@ Aryan Yadav    Roll No. 2401730245
 Project Description: 
 Melt House is a web-based smart menu interface designed to enhance the dining experience by allowing users to interactively select food items (Appetizer, Main Course, Dessert/Drink), with real-time price calculation. The UI is responsive and styled using Tailwind CSS, and JavaScript handles the dynamic logic including item selection and total billing.
 
-Link to Video Explanation:
 
 Technologies Used: 
 HTML5 – for structure and layout
