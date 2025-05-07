@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Menu Chooser | Melt House</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092'); /* Food background image */
+            background-size: cover;
+            background-position: center;
+        }
+
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.6); /* Dark overlay for readability */
+            backdrop-filter: blur(3px);
+        }
+    </style>
+</head>
+
+<body class="overlay min-h-screen flex flex-col items-center justify-center text-white font-sans">
+
+    <!-- Title -->
+    <h1 class="text-5xl font-bold mb-8 font-playfair">Welcome to Melt House</h1>
+
+    <!-- Menu Card -->
+    <div class="bg-white bg-opacity-20 rounded-2xl shadow-lg p-10 w-11/12 md:w-2/3 lg:w-1/2 flex flex-col items-center space-y-6">
+
+        <!-- Dropdowns -->
+        <div class="w-full">
+            <label class="block text-lg mb-2">Choose your Appetizer:</label>
+            <select id="appetizer" class="w-full p-3 rounded-lg bg-white bg-opacity-80 text-black">
+                <option value="">-- Select an Appetizer --</option>
+                <!-- Dynamically added options based on backend changes -->
+            </select>
+        </div>
+
+        <div class="w-full">
+            <label class="block text-lg mb-2">Choose your Main Course:</label>
+            <select id="mainCourse" class="w-full p-3 rounded-lg bg-white bg-opacity-80 text-black">
+                <option value="">-- Select a Main Course --</option>
+                <!-- Dynamically added options based on backend changes -->
+            </select>
+        </div>
+
+        <div class="w-full">
+            <label class="block text-lg mb-2">Choose your Dessert/Drink:</label>
+            <select id="dessert" class="w-full p-3 rounded-lg bg-white bg-opacity-80 text-black">
+                <option value="">-- Select a Dessert/Drink --</option>
+                <!-- Dynamically added options based on backend changes -->
+            </select>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex space-x-6">
+            <button onclick="chooseMenu()" class="bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-3 rounded-xl transition transform hover:scale-105 font-semibold">
+                Choose Your Menu
+            </button>
+            <button onclick="resetMenu()" class="bg-red-400 hover:bg-red-500 text-white px-6 py-3 rounded-xl transition transform hover:scale-105 font-semibold">
+                Reset Choices
+            </button>
+        </div>
+
+        <!-- Result -->
+        <div id="result" class="text-center text-2xl mt-6"></div>
+    </div>
+
+    <!-- Script -->
+    <script>
+        const menu = {
+            "Pizza": 1024,
+            "Pasta": 210,
+            "Burger": 400,
+            "Salad": 120,
+            "Espresso": 205,
+            "Cappuccino": 305,
+            "Latte": 400,
+            "Americano": 300,
+            "Mocha": 405,
+            "Hot Chocolate": 350,
+            "Green Tea": 280,
+            "Black Tea": 200,
+            "Iced Coffee": 300,
+            "Smoothie": 700,
+            "Bagel": 250,
+            "Croissant": 300,
+            "Muffin": 200,
+            "Cheesecake": 500,
+            "Chocolate Cake": 500,
+            "Sandwich": 500,
+            "French Fries": 300
+        };
+
+        // Dynamically populate dropdowns based on the menu object
+        function populateDropdowns() {
+            // Populate appetizer dropdown
+            const appetizerSelect = document.getElementById('appetizer');
+            const mainCourseSelect = document.getElementById('mainCourse');
+            const dessertSelect = document.getElementById('dessert');
+
+            Object.keys(menu).forEach(item => {
+                const option = document.createElement('option');
+                option.value = item;
+                option.innerText = `${item} (Rs${menu[item]})`;
+
+                // Populate in respective categories
+                if (["Salad", "Bagel", "Croissant", "French Fries", "Muffin"].includes(item)) {
+                    appetizerSelect.appendChild(option.cloneNode(true));
+                } else if (["Pizza", "Pasta", "Burger", "Sandwich", "Smoothie"].includes(item)) {
+                    mainCourseSelect.appendChild(option.cloneNode(true));
+                } else {
+                    dessertSelect.appendChild(option.cloneNode(true));
+                }
+            });
+        }
+
+        // Call the function to populate dropdowns when the page loads
+        window.onload = populateDropdowns;
+
+        function chooseMenu() {
+            const appetizer = document.getElementById('appetizer').value;
+            const mainCourse = document.getElementById('mainCourse').value;
+            const dessert = document.getElementById('dessert').value;
+            let total = 0;
+            let items = [];
+
+            if (appetizer) {
+                total += menu[appetizer];
+                items.push(appetizer);
+            }
+            if (mainCourse) {
+                total += menu[mainCourse];
+                items.push(mainCourse);
+            }
+            if (dessert) {
+                total += menu[dessert];
+                items.push(dessert);
+            }
+
+            if (items.length > 0) {
+                document.getElementById('result').innerHTML = `You ordered: <br> ${items.join(', ')}<br><br>Total: Rs${total}`;
+            } else {
+                document.getElementById('result').innerHTML = "Please select at least one item!";
+            }
+        }
+
+        function resetMenu() {
+            document.getElementById('appetizer').value = '';
+            document.getElementById('mainCourse').value = '';
+            document.getElementById('dessert').value = '';
+            document.getElementById('result').innerHTML = '';
+        }
+    </script>
+
+</body>
+
+</html>
